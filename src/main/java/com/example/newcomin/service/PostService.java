@@ -1,11 +1,15 @@
 package com.example.newcomin.service;
 
 import com.example.newcomin.entity.Post;
+import com.example.newcomin.entity.User;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 
 public interface PostService {
-    Post createPost(Post post);
+    Post createPost(User user, LocalDateTime postDate,
+                    String postTitle, String postContent);
 
     Post getPostById(Long postId);
 

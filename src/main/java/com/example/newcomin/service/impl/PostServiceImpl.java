@@ -1,10 +1,14 @@
 package com.example.newcomin.service.impl;
 
 import com.example.newcomin.entity.Post;
+import com.example.newcomin.entity.User;
 import com.example.newcomin.repository.PostRepository;
+import com.example.newcomin.repository.UserRepository;
 import com.example.newcomin.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
 
@@ -12,15 +16,30 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PostServiceImpl(PostRepository postRepository) {
+    public PostServiceImpl(PostRepository postRepository,
+                           UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
-    public Post createPost(Post post){
-        return postRepository.save(post);
+    public Post createPost(User user, LocalDateTime postDate,
+                           String postTitle, String postContent) {
+        if (user != null && postTitle != null && postContent != null) {
+
+            Post post = new Post();
+            post.setUserId(user);
+            post.setPostDate(postDate);
+            post.setPostTitle(postTitle);
+            post.setPostContent(postContent);
+
+            return postRepository.save(post);
+        } else {
+            throw new IllegalArgumentException("유효하지 않은 건의사항 정보입니다.");
+        }
     }
 
     @Override

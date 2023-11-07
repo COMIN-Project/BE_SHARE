@@ -1,12 +1,15 @@
 package com.example.newcomin.controller;
 
 import com.example.newcomin.entity.Post;
+import com.example.newcomin.entity.User;
 import com.example.newcomin.service.PostService;
+import com.example.newcomin.service.UserService;
 
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -17,14 +20,19 @@ import java.util.List;
 public class PostController {
 
     private PostService postService;
+    private UserService userService;
 
     // 등록
     @PostMapping
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
-        if (post != null && post.getPostId() != null) {
-            // PostService를 사용하여 Post를 생성합니다.
-            Post savedPost = postService.createPost(post);
-            if (savedPost != null) {
+        if (post != null && post.getUserId() != null
+                && post.getPostTitle() != null && post.getPostContent() != null) {
+            Long userId = post.getUserId().getUserId();
+            User user = userService.getUserById(userId);
+
+            if (user != null) {
+                LocalDateTime postDate = LocalDateTime.now(); // 현재 시간을 가져와서 postDate로 설정
+                Post savedPost = postService.createPost(user, postDate, post.getPostTitle(), post.getPostContent());
                 return new ResponseEntity<>(savedPost, HttpStatus.CREATED);
             } else {
                 // Admin 생성에 실패한 경우 처리할 코드를 추가할 수 있습니다.
@@ -34,6 +42,7 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
     // 조회
     @GetMapping("/{postId}")
