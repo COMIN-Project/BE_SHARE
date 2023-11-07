@@ -19,14 +19,14 @@ public class FacilityServiceImpl implements FacilityService {
     }
 
     @Override
-    public Facility createFacility (Facility facility){
+    public Facility createFacility(Facility facility){
         return facilityRepository.save(facility);
     }
 
     @Override
-    public Facility getFacilityById(Long facilityId){
+    public Facility getFacilityById(Long facilityId) {
         Optional<Facility> optionalFacility = facilityRepository.findById(facilityId);
-        return optionalFacility.get();
+        return optionalFacility.orElse(null);
     }
     @Override
     public List<Facility> getAllFacilities(){
@@ -35,9 +35,12 @@ public class FacilityServiceImpl implements FacilityService {
 
     @Override
     public Facility updateFacility(Facility facility){
-        Facility existingFacility = facilityRepository.findById(facility.getFacilityId()).get();
-        existingFacility.setFacilityName(facility.getFacilityName());
-        Facility updatedFacility = facilityRepository.save(existingFacility);
-        return updatedFacility;
+        Facility existingFacility = facilityRepository.findById(facility.getFacilityId()).orElse(null);
+        if (existingFacility != null) {
+            existingFacility.setFacilityName(facility.getFacilityName());
+            Facility updatedFacility = facilityRepository.save(existingFacility);
+            return updatedFacility;
+        }
+        return null;
     }
 }

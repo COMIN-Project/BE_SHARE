@@ -29,12 +29,14 @@ public class FacilityController {
         Facility facility = facilityService.getFacilityById(facilityId);
         return new ResponseEntity<>(facility,HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity<List<Facility>> getAllFacilities(){
         List<Facility> facilities = facilityService.getAllFacilities();
         return new ResponseEntity<>(facilities,HttpStatus.OK);
     }
 
+    // 수정
     @PutMapping("/{facilityId}")
     public ResponseEntity<Facility> updateFacility(@PathVariable("facilityId") Long facilityId,
                                                    @RequestBody Facility facility){
@@ -42,4 +44,5 @@ public class FacilityController {
         Facility updatedFacility = facilityService.updateFacility(facility);
         return new ResponseEntity<>(updatedFacility,HttpStatus.OK);
     }
+
 }

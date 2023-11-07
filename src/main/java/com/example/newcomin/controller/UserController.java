@@ -24,8 +24,8 @@ public class UserController {
     }
 
     // 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long userId){
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable("userId") Long userId){
         User user = userService.getUserById(userId);
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
@@ -36,13 +36,18 @@ public class UserController {
     }
 
     // 수정
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long userId,
+    @PutMapping("/{userId}")
+    public ResponseEntity<User> updateUser(@PathVariable("userId") Long userId,
                                            @RequestBody User user){
-        user.setId(userId);
+        user.setUserId(userId);
         User updatedUser = userService.updateUser(user);
         return new ResponseEntity<>(updatedUser,HttpStatus.OK);
     }
 
     // 삭제
+    @DeleteMapping("/{userId}")
+    public  ResponseEntity<String> deleteUser(@PathVariable("userId") Long userId){
+        userService.deleteUser((userId));
+        return new ResponseEntity<>("회원 정보를 삭제했습니다.", HttpStatus.OK);
+    }
 }

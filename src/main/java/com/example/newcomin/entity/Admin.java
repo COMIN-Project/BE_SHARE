@@ -1,7 +1,9 @@
 package com.example.newcomin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,6 +24,10 @@ public class Admin implements Serializable {
     private Long adminId;
 
     @ManyToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
-    private User user;
+    @JoinColumn(name = "userid")
+    private User userId;
+
+    @OneToMany(mappedBy = "adminId")
+    @JsonIgnore
+    private List<Room> rooms;
 }
