@@ -36,6 +36,11 @@ public class Reservation implements Serializable {
     private LocalDate reservationDate;
 
     @ManyToOne
+    @JoinColumn(name = "companionId")
+    private User companion;
+
+
+    @ManyToOne
     @JoinColumn(name = "roomId")
     private Room roomId;
 

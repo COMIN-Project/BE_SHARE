@@ -29,15 +29,18 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         if (reservation != null && reservation.getUserId() != null
+                && reservation.getCompanion() != null // companion 필드 추가
                 && reservation.getRoomId() != null
                 && reservation.getStartTime() != null
                 && reservation.getEndTime() != null
                 && reservation.getReservationDate() != null) {
             Long userId = reservation.getUserId().getUserId();
+            Long companionId = reservation.getCompanion().getUserId(); // companionId 가져오기
             Long roomId = reservation.getRoomId().getRoomId();
             User user = userService.getUserById(userId);
+            User companion = userService.getUserById(companionId); // companion 가져오기
             Room room = roomService.getRoomById(roomId);
-            if (user != null && room != null) {
+            if (user != null && companion != null && room != null) { // companion 유효성 검사 추가
                 // 예약 상태 판단
                 LocalDateTime now = LocalDateTime.now();
                 ReservationStatus reservationStatus;
@@ -49,7 +52,7 @@ public class ReservationController {
                     reservationStatus = ReservationStatus.AVAILABLE;
                 }
                 Reservation savedReservation = reservationService.createReservation(
-                        user, room, reservationStatus,
+                        user, companion, room, reservationStatus, // companion 추가
                         reservation.getStartTime(), reservation.getEndTime(),
                         reservation.getReservationDate());
                 if (savedReservation != null) {
@@ -64,6 +67,7 @@ public class ReservationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     // 예약 아이디로 조회

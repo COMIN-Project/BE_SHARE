@@ -37,20 +37,20 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(User user, Room room, ReservationStatus reservationStatus,
+    public Reservation createReservation(User user, User companion, Room room, ReservationStatus reservationStatus,
                                          LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate) {
-        if (user != null && room != null && startTime != null
+        if (user != null && companion != null && room != null && startTime != null
                 && endTime != null && reservationDate != null) {
             Reservation reservation = new Reservation();
             reservation.setUserId(user);
+            reservation.setCompanion(companion); // companion 설정
             reservation.setRoomId(room);
             reservation.setReservationStatus(reservationStatus);
             reservation.setStartTime(startTime);
             reservation.setEndTime(endTime);
             reservation.setReservationDate(reservationDate);
             return reservationRepository.save(reservation);
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("유효하지 않은 예약 정보입니다.");
         }
     }

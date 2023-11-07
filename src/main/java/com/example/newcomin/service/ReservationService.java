@@ -10,8 +10,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationService {
-    Reservation createReservation(User user, Room room, ReservationStatus reservationStatus,
-                                  LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate);
+
+    Reservation createReservation(User user, User companion,
+                                  Room room, ReservationStatus reservationStatus,
+                                  LocalDateTime startTime, LocalDateTime endTime,
+                                  LocalDate reservationDate);
     Reservation getReservationById(Long reservationId);
     List<Reservation> getAllReservations();
     void deleteReservation(Long reservationId);
