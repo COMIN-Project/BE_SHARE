@@ -35,4 +35,13 @@ public class User implements Serializable{
     @OneToMany(mappedBy = "userId")
     @JsonIgnore
     private List<Admin> admins;
+
+    @ManyToMany
+    @JsonIgnore
+    @JoinTable(
+            name = "reservation_companion",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "reservation_id")
+    )
+    private List<Reservation> reservations;
 }

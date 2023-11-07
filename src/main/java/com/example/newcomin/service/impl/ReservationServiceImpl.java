@@ -37,13 +37,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(User user, User companion, Room room, ReservationStatus reservationStatus,
+    public Reservation createReservation(User user, List<User> companions, Room room, ReservationStatus reservationStatus,
                                          LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate) {
-        if (user != null && companion != null && room != null && startTime != null
+        if (user != null && companions != null && !companions.isEmpty() && room != null && startTime != null
                 && endTime != null && reservationDate != null) {
             Reservation reservation = new Reservation();
             reservation.setUserId(user);
-            reservation.setCompanion(companion); // companion 설정
+            reservation.setCompanions(companions); // companions 설정
             reservation.setRoomId(room);
             reservation.setReservationStatus(reservationStatus);
             reservation.setStartTime(startTime);

@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -35,9 +36,13 @@ public class Reservation implements Serializable {
     @Column(nullable = false)
     private LocalDate reservationDate;
 
-    @ManyToOne
-    @JoinColumn(name = "companionId")
-    private User companion;
+    @ManyToMany
+    @JoinTable(
+            name = "reservation_companion",
+            joinColumns = @JoinColumn(name = "reservation_id"),
+            inverseJoinColumns = @JoinColumn(name = "companion_id")
+    )
+    private List<User> companions;
 
 
     @ManyToOne
