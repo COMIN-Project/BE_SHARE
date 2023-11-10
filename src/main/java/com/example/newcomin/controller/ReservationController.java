@@ -26,7 +26,7 @@ public class ReservationController {
     private RoomService roomService;
     private UserService userService;
 
-    // 예약 생성
+    // 등록
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         if (reservation != null && reservation.getUserId() != null
@@ -35,13 +35,16 @@ public class ReservationController {
                 && reservation.getStartTime() != null
                 && reservation.getEndTime() != null
                 && reservation.getReservationDate() != null) {
+
             Long userId = reservation.getUserId().getUserId();
-            List<User> companions = reservation.getCompanions(); // companions 가져오기
+            List<Long> companions = reservation.getCompanions();
+
             Long roomId = reservation.getRoomId().getRoomId();
             User user = userService.getUserById(userId);
+
             List<User> companionUsers = new ArrayList<>();
-            for (User companion : companions) {
-                Long companionId = companion.getUserId();
+
+            for (Long companionId : companions) {
                 User companionUser = userService.getUserById(companionId);
                 if (companionUser != null) {
                     companionUsers.add(companionUser);
@@ -62,7 +65,7 @@ public class ReservationController {
                     reservationStatus = ReservationStatus.AVAILABLE;
                 }
                 Reservation savedReservation = reservationService.createReservation(
-                        user, companionUsers, room, reservationStatus,
+                        user, companions, room, reservationStatus,
                         reservation.getStartTime(), reservation.getEndTime(),
                         reservation.getReservationDate());
                 if (savedReservation != null) {
@@ -77,6 +80,8 @@ public class ReservationController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+
 
     // 예약 아이디로 조회
     @GetMapping("/{id}")

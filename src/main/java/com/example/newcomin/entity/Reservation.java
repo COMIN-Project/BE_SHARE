@@ -36,14 +36,11 @@ public class Reservation implements Serializable {
     @Column(nullable = false)
     private LocalDate reservationDate;
 
-    @ManyToMany
-    @JoinTable(
-            name = "reservation_companion",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "companion_id")
-    )
-    private List<User> companions;
-
+    @ElementCollection
+    @JoinTable(name = "reservation_companions",
+            joinColumns = @JoinColumn(name = "reservationId"))
+    @Column(name = "userId")
+    private List<Long> companions;
 
     @ManyToOne
     @JoinColumn(name = "roomId")

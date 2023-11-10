@@ -37,7 +37,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation createReservation(User user, List<User> companions, Room room, ReservationStatus reservationStatus,
+    public Reservation createReservation(User user, List<Long> companions, Room room, ReservationStatus reservationStatus,
                                          LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate) {
         if (user != null && companions != null && !companions.isEmpty() && room != null && startTime != null
                 && endTime != null && reservationDate != null) {

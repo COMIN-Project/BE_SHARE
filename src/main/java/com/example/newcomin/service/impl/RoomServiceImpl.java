@@ -54,6 +54,15 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public Room updateRoom(Room room){
+        Room existingRoom = roomRepository.findById(room.getRoomId()).get();
+        existingRoom.setRoomName(room.getRoomName());
+        existingRoom.setRoomCapacity(room.getRoomCapacity());
+        Room updatedRoom = roomRepository.save(existingRoom);
+        return  updatedRoom;
+    }
+
+    @Override
     public void deleteRoom(Long roomId){
         roomRepository.deleteById(roomId);
     }

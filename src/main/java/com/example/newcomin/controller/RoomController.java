@@ -1,5 +1,6 @@
 package com.example.newcomin.controller;
 
+import com.example.newcomin.entity.Post;
 import com.example.newcomin.service.FacilityService;
 import com.example.newcomin.service.AdminService;
 import com.example.newcomin.service.RoomService;
@@ -47,9 +48,6 @@ public class RoomController {
         }
     }
 
-
-
-
     // 조회
     @GetMapping("/{roomId}")
     public ResponseEntity<Room> getRoomById(@PathVariable("roomId") Long roomId){
@@ -61,6 +59,15 @@ public class RoomController {
     public ResponseEntity<List<Room>> getAllRooms(){
         List<Room> rooms = roomService.getAllRooms();
         return new ResponseEntity<>(rooms,HttpStatus.OK);
+    }
+
+    // 수정
+    @PutMapping("/{roomId}")
+    public ResponseEntity<Room> updateRoom(@PathVariable("roomId") Long roomId,
+                                           @RequestBody Room room){
+        room.setRoomId(roomId);
+        Room updatedRoom = roomService.updateRoom(room);
+        return new ResponseEntity<>(updatedRoom,HttpStatus.OK);
     }
 
     // 삭제

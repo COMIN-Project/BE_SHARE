@@ -12,7 +12,7 @@ import java.util.List;
 public interface ReservationService {
 
     Reservation createReservation
-            (User user, List<User> companions, Room room, ReservationStatus reservationStatus,
+            (User user, List<Long> companions, Room room, ReservationStatus reservationStatus,
              LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate);
 
     Reservation getReservationById(Long reservationId);

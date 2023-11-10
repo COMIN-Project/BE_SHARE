@@ -10,7 +10,10 @@ public interface RoomService {
     Room createRoom(Facility facility, Admin admin, String roomName, String roomCapacity);
 
     Room getRoomById(Long roomId);
+
     List<Room> getAllRooms();
+
+    Room updateRoom(Room room);
 
     void deleteRoom(Long roomId);
 }
