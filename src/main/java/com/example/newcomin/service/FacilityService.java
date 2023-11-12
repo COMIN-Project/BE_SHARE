@@ -5,9 +5,13 @@ import java.util.List;
 
 
 public interface FacilityService {
+
     Facility createFacility(Facility facility);
+
     Facility getFacilityById(Long facilityId);
+
     List<Facility> getAllFacilities();
+
     Facility updateFacility(Facility facility);
 }
 

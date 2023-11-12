@@ -19,12 +19,12 @@ import lombok.Setter;
 
 public class Admin implements Serializable {
 
-    @Id
+    @Id // 기본키
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
 
     @ManyToOne
-    @JoinColumn(name = "userid")
+    @JoinColumn(name = "userId")
     private User userId;
 
     @OneToMany(mappedBy = "adminId")

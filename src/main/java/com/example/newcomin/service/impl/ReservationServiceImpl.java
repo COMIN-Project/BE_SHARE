@@ -3,6 +3,8 @@ package com.example.newcomin.service.impl;
 import com.example.newcomin.entity.*;
 import com.example.newcomin.entity.User;
 import com.example.newcomin.entity.Room;
+import com.example.newcomin.entity.Reservation;
+import com.example.newcomin.entity.ReservationDTO;
 import com.example.newcomin.repository.ReservationRepository;
 import com.example.newcomin.repository.RoomRepository;
 import com.example.newcomin.repository.UserRepository;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @EnableScheduling
@@ -25,6 +28,31 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationRepository reservationRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+
+    private ReservationDTO convertToDTO(Reservation reservation) {
+        ReservationDTO dto = new ReservationDTO();
+
+        // Reservation 객체의 필드 값을 ReservationDTO 객체로 복사하는 로직을 작성
+        dto.setReservationId(reservation.getReservationId());
+        dto.setReservationStatus(reservation.getReservationStatus());
+        dto.setReservationDate(reservation.getReservationDate());
+
+        // startTime 추출 (localdatetime에서 string으로 변환하는 과정)
+        String startTime = reservation.getStartTime().toString();
+        startTime = startTime.substring(11, 16); // "YYYY-MM-DDTHH:MM:SS"에서 12-16자리만 추출
+        dto.setStartTime(startTime);
+
+        // endTime 추출 (localdatetime에서 string으로 변환하는 과정)
+        String endTime = reservation.getEndTime().toString();
+        endTime = endTime.substring(11, 16); // "YYYY-MM-DDTHH:MM:SS"에서 12-16자리만 추출
+        dto.setEndTime(endTime);
+
+        dto.setCompanions(reservation.getCompanions());
+        dto.setRoomId(reservation.getRoomId());
+        dto.setUserId(reservation.getUserId());
+
+        return dto;
+    }
 
 
     @Autowired
@@ -56,14 +84,17 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public Reservation getReservationById(Long reservationId) {
-        Optional<Reservation> optionalReservation = reservationRepository.findById(reservationId);
-        return optionalReservation.get();
+    public List<ReservationDTO> getAllReservations() {
+        List<Reservation> reservations = reservationRepository.findAll();
+        return reservations.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Reservation> getAllReservations() {
-        return reservationRepository.findAll();
+    public Optional<ReservationDTO> getReservationById(Long reservationId) {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        return reservation.map(this::convertToDTO);
     }
 
     @Override
@@ -72,19 +103,26 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<Reservation> getUserReservations(User user) {
-        return reservationRepository.findByUserId(user);
+    public List<ReservationDTO> getUserReservations(User user) {
+        List<Reservation> reservation = reservationRepository.findByUserId(user);
+        return reservation.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Reservation> getReservationsByRoom(Room room) {
-        return reservationRepository.findByRoomId(room);
+    public List<ReservationDTO> getReservationsByRoom(Room room) {
+        List<Reservation> reservation =  reservationRepository.findByRoomId(room);
+        return reservation.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
     }
 
     @Override
     @Scheduled(cron = "0 * * * * *")
     public void updateReservationStatus() {
-        List<Reservation> reservations = getAllReservations();
+        List<Reservation> reservations = reservationRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
 
         for (Reservation reservation : reservations) {
@@ -99,4 +137,3 @@ public class ReservationServiceImpl implements ReservationService {
         reservationRepository.saveAll(reservations); // 변경된 예약 상태를 저장
     }
 }
-

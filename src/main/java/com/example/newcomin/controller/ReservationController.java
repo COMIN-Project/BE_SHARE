@@ -1,6 +1,7 @@
 package com.example.newcomin.controller;
 
 import com.example.newcomin.entity.Reservation;
+import com.example.newcomin.entity.ReservationDTO;
 import com.example.newcomin.entity.ReservationStatus;
 import com.example.newcomin.entity.Room;
 import com.example.newcomin.entity.User;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Optional;
+
 
 @RestController
 @AllArgsConstructor
@@ -26,7 +29,7 @@ public class ReservationController {
     private RoomService roomService;
     private UserService userService;
 
-    // 등록
+    // 예약 정보 등록
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         if (reservation != null && reservation.getUserId() != null
@@ -81,41 +84,41 @@ public class ReservationController {
         }
     }
 
+    // 모든 예약 조회
+    @GetMapping
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        List<ReservationDTO> reservations = reservationService.getAllReservations();
+        return ResponseEntity.ok(reservations);
+    }
 
 
     // 예약 아이디로 조회
-    @GetMapping("/{id}")
-    public ResponseEntity<Reservation> getReservationById(@PathVariable Long id) {
-        Reservation reservation = reservationService.getReservationById(id);
-        if (reservation != null) {
-            return ResponseEntity.ok(reservation);
+    @GetMapping("/{reservationId}")
+    public ResponseEntity<Optional<ReservationDTO>> getReservationById(@PathVariable Long reservationId) {
+        Optional<ReservationDTO> reservationDTO = reservationService.getReservationById(reservationId);
+        if (reservationDTO.isPresent()) {
+            return ResponseEntity.ok(reservationDTO);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    // 모든 예약 조회
-    @GetMapping
-    public ResponseEntity<List<Reservation>> getAllReservations() {
-        List<Reservation> reservations = reservationService.getAllReservations();
-        return ResponseEntity.ok(reservations);
-    }
 
     // 특정 사용자의 예약 조회
     @GetMapping("user/{userId}")
-    public ResponseEntity<List<Reservation>> getUserReservations(@PathVariable Long userId) {
+    public ResponseEntity<List<ReservationDTO>> getUserReservations(@PathVariable Long userId) {
         User user = new User();
         user.setUserId(userId);
-        List<Reservation> userReservations = reservationService.getUserReservations(user);
+        List<ReservationDTO> userReservations = reservationService.getUserReservations(user);
         return ResponseEntity.ok(userReservations);
     }
 
     // 특정 방의 예약 조회
     @GetMapping("room/{roomId}")
-    public ResponseEntity<List<Reservation>> getReservationsByRoom(@PathVariable Long roomId) {
+    public ResponseEntity<List<ReservationDTO>> getReservationsByRoom(@PathVariable Long roomId) {
         Room room = new Room();
         room.setRoomId(roomId);
-        List<Reservation> roomReservations = reservationService.getReservationsByRoom(room);
+        List<ReservationDTO> roomReservations = reservationService.getReservationsByRoom(room);
         return ResponseEntity.ok(roomReservations);
     }
 
