@@ -33,7 +33,6 @@ public class ReservationController {
     @PostMapping
     public ResponseEntity<Reservation> createReservation(@RequestBody Reservation reservation) {
         if (reservation != null && reservation.getUserId() != null
-                && reservation.getCompanions() != null
                 && reservation.getRoomId() != null
                 && reservation.getStartTime() != null
                 && reservation.getEndTime() != null
@@ -56,7 +55,7 @@ public class ReservationController {
                 }
             }
             Room room = roomService.getRoomById(roomId);
-            if (user != null && companionUsers != null && !companionUsers.isEmpty() && room != null) {
+            if (user != null && room != null) {
                 // 예약 상태 판단
                 LocalDateTime now = LocalDateTime.now();
                 ReservationStatus reservationStatus;

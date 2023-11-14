@@ -51,4 +51,5 @@ public class AdminController {
         adminService.deleteAdmin((adminId));
         return new ResponseEntity<>("관리자 정보를 삭제했습니다.", HttpStatus.OK);
     }
+
 }

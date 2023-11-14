@@ -32,7 +32,7 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationDTO convertToDTO(Reservation reservation) {
         ReservationDTO dto = new ReservationDTO();
 
-        // Reservation 객체의 필드 값을 ReservationDTO 객체로 복사하는 로직을 작성
+        // Reservation 객체의 필드 값을 ReservationDTO 객체로 복사
         dto.setReservationId(reservation.getReservationId());
         dto.setReservationStatus(reservation.getReservationStatus());
         dto.setReservationDate(reservation.getReservationDate());
@@ -67,7 +67,7 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public Reservation createReservation(User user, List<Long> companions, Room room, ReservationStatus reservationStatus,
                                          LocalDateTime startTime, LocalDateTime endTime, LocalDate reservationDate) {
-        if (user != null && companions != null && !companions.isEmpty() && room != null && startTime != null
+        if (user != null && room != null && startTime != null
                 && endTime != null && reservationDate != null) {
             Reservation reservation = new Reservation();
             reservation.setUserId(user);
