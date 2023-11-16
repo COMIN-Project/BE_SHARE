@@ -12,5 +12,7 @@ public interface AdminService {
 
     List<Admin> getAllAdmins();
 
+    Admin updateAdmin(Admin admin);
+
     void deleteAdmin(Long adminId);
 }

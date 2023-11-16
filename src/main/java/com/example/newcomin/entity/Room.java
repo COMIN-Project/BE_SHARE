@@ -24,10 +24,10 @@ public class Room implements Serializable {
     private String roomName;
 
     @Column(nullable = false)
-    private String roomCapacity;
+    private Integer roomCapacity;
 
     @ManyToOne
-    @JoinColumn(name = "adminId")
+    @JoinColumn(name = "adminId", nullable = true)
     private Admin adminId;
 
     @ManyToOne

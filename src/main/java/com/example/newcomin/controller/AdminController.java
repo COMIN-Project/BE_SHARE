@@ -45,6 +45,15 @@ public class AdminController {
         return new ResponseEntity<>(admins,HttpStatus.OK);
     }
 
+    // 수정
+    @PutMapping("/{adminId}")
+    public ResponseEntity<Admin> updateAdmin(@PathVariable("adminId") Long adminId,
+                                           @RequestBody Admin admin){
+        admin.setAdminId(adminId);
+        Admin updatedAdmin = adminService.updateAdmin(admin);
+        return new ResponseEntity<>(updatedAdmin,HttpStatus.OK);
+    }
+
     // 삭제
     @DeleteMapping("/{adminId}")
     public  ResponseEntity<String> deleteAdmin(@PathVariable("adminId") Long adminId){

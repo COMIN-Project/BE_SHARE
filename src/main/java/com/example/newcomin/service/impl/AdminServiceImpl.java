@@ -60,6 +60,14 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin updateAdmin(Admin admin){
+        Admin existingAdmin = adminRepository.findById(admin.getAdminId()).get();
+        existingAdmin.setUserId(admin.getUserId());
+        Admin updatedAdmin = adminRepository.save(existingAdmin);
+        return updatedAdmin;
+    }
+
+    @Override
     public void deleteAdmin(Long adminId){
         adminRepository.deleteById(adminId);
     }

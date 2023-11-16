@@ -43,6 +43,7 @@ public class ReservationController {
 
             Long roomId = reservation.getRoomId().getRoomId();
             User user = userService.getUserById(userId);
+            Room room = roomService.getRoomById(roomId);
 
             List<User> companionUsers = new ArrayList<>();
 
@@ -54,7 +55,7 @@ public class ReservationController {
                     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
                 }
             }
-            Room room = roomService.getRoomById(roomId);
+
             if (user != null && room != null) {
                 // 예약 상태 판단
                 LocalDateTime now = LocalDateTime.now();

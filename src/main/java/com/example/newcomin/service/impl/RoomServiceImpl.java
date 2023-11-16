@@ -28,7 +28,7 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public Room createRoom(Facility facility, Admin admin, String roomName, String roomCapacity) {
+    public Room createRoom(Facility facility, Admin admin, String roomName, Integer roomCapacity) {
         if (facility != null && admin != null && roomName != null && roomCapacity != null) {
 
             Room room = new Room();

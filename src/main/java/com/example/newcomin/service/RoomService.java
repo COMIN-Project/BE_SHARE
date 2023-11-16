@@ -7,7 +7,7 @@ import java.util.List;
 
 
 public interface RoomService {
-    Room createRoom(Facility facility, Admin admin, String roomName, String roomCapacity);
+    Room createRoom(Facility facility, Admin admin, String roomName, Integer roomCapacity);
 
     Room getRoomById(Long roomId);
 
